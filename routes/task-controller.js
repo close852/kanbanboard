@@ -24,7 +24,7 @@ app.post('/add', (req, res) => {
     res.redirect('/task')
 })
 
-app.post('/update/:status', (req, res) => {
+app.put('/update/:status', (req, res) => {
     let { status } = req.params;
     let { contents } = req.body;
     if (status === 'done') {
@@ -46,7 +46,7 @@ app.post('/update/:status', (req, res) => {
     res.redirect('/task')
 })
 
-app.post('/updateAjax/:status', (req, res) => {
+app.put('/updateAjax/:status', (req, res) => {
     let { status } = req.params;
     let { data } = req.body;
 
@@ -66,7 +66,7 @@ app.post('/updateAjax/:status', (req, res) => {
     res.send({ result: true, msg: 'gogo' });
 })
 
-app.post('/remove', (req, res) => {
+app.delete('/remove', (req, res) => {
 
     let { contents } = req.body;
     if (isContain(initialTasks.done, contents)) {

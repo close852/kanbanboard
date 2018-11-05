@@ -18,9 +18,17 @@ class App {
         this.expressApp.set('port', this.configs.port)
         this.expressApp.set('views', path.join(__dirname, 'views'))
         this.expressApp.set('view engine', 'pug')
-        this.expressApp.use(methodOverride())
         this.expressApp.use(bodyParser.json())
-        this.expressApp.use(bodyParser.urlencoded({ extended: true }));
+        this.expressApp.use(bodyParser.urlencoded({ extended: false }));
+        this.expressApp.use(methodOverride((req, res) => {
+            if (req.body && typeof req.body === 'object' && req.body._method) {
+                // look in urlencoded POST bodies and delete it
+                var method = req.body._method
+                // console.log('method :: ', method);
+                delete req.body._method
+                return method
+            }
+        }))
         this.expressApp.use(express.static(path.join(__dirname, 'public')));
 
         new Routes(this.expressApp);

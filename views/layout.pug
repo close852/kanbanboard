@@ -20,7 +20,7 @@ html
 				//- $('#'+text).siblings().remove();
 				$.ajax({
 					url:`/task/updateAjax/${status}`,
-					method:"post",
+					method:"put",
 					data:{data:text}
 				}).done((data)=>{
 					if(data.result){

@@ -21,6 +21,7 @@ block content
 								li.list-group-item(draggable='true' ondragstart='drag(this,event)' id=`${val}`)= val
 								.input-group-btn
 									form(action='/task/update/progress', method='post')
+										input(type="hidden", name="_method" value="PUT")
 										button(type='submit' class='btn btn-info' name='contents' value= val) <strong>></strong>
 			.col-lg-4
 				ul.list-group(ondrop='drop("inProgress",event)' ondragover="allowDrop(event)")
@@ -31,10 +32,12 @@ block content
 							.input-group
 								.input-group-btn
 									form(action='/task/update/todo', method='post')
+										input(type="hidden", name="_method" value="PUT")
 										button(type='submit' class='btn btn-info' name='contents' value= val) <strong><</strong>
 								li.list-group-item(draggable='true' ondragstart='drag(this,event)' id=`${val}`)= val
 								.input-group-btn
 									form(action='/task/update/done', method='post')
+										input(type="hidden", name="_method" value="PUT")
 										button(type='submit' class='btn btn-info' name='contents' value= val) <strong>></strong>
 			.col-lg-4
 				ul.list-group(ondrop='drop("done",event)' ondragover="allowDrop(event)")
@@ -45,8 +48,10 @@ block content
 							.input-group
 								.input-group-btn
 									form(action='/task/update/progress', method='post')
+										input(type="hidden", name="_method" value="PUT")
 										button(type='submit' class='btn btn-info' name='contents' value= val) <strong><</strong>
 								li.list-group-item(draggable='true' ondragstart='drag(this,event)' id=`${val}`)= val
 								.input-group-btn
 									form(action='/task/remove', method='post')
+										input(type="hidden", name="_method" value="DELETE")
 										button(type='submit' class='btn btn-danger' name='contents' value= val) D
