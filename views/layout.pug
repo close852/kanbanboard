@@ -1,0 +1,33 @@
+doctype 5
+html
+	head
+		title= title
+		link(rel='stylesheet', href='//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css')
+		link(rel='stylesheet', href='//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap-theme.min.css')
+		script(src="//code.jquery.com/jquery-latest.min.js")
+		script(src='//netdna.bootstrapcdn.com/bootstrap/3.0.0/js/bootstrap.min.js')
+		script.
+			function drag(me, ev){
+			    ev.dataTransfer.setData("Text", ev.target.id);
+			}
+			function drop(status,ev) {
+				var text = ev.dataTransfer.getData("Text");
+				//- $(ev.target).parents('.wrapper').append(document.getElementById(text))
+				//- $('#'+text).siblings().remove();
+				$.ajax({
+					url:`/task/updateAjax/${status}`,
+					method:"post",
+					async:false,
+					data:{data:text}
+				}).done((data)=>{
+					location.reload();
+				}).error(e=>{
+				})
+				ev.preventDefault();
+			}
+			function allowDrop(ev) {
+				ev.preventDefault();
+			}
+
+	body
+		block content

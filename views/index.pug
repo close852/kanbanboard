@@ -1,0 +1,52 @@
+extends layout
+
+block content
+	.container
+		.jumbotron
+			h1 MY KANBAN BOARD
+			p Welcome!! This is my Kanban Board which let me do my job better!!
+			p If you want to create new task, just push this button!!
+			.form-group
+				form(action='/task/add', method='post')
+					input(type='text' name='contents' class='form-control')
+					button(type='submit' class='btn btn-success') Add Task
+		.row
+			.col-lg-4
+				ul.list-group(ondrop='drop("todo",event)' ondragover="allowDrop(event)")
+					li.list-group-item.active TO-DO
+						span.badge= todoTasks.length
+					div.wrapper
+						each val in todoTasks
+							.input-group
+								li.list-group-item(draggable='true' ondragstart='drag(this,event)' id=`${val}`)= val
+								.input-group-btn
+									form(action='/task/update/progress', method='post')
+										button(type='submit' class='btn btn-info' name='contents' value= val) <strong>></strong>
+			.col-lg-4
+				ul.list-group(ondrop='drop("inProgress",event)' ondragover="allowDrop(event)")
+					li.list-group-item.active In-Progress
+						span.badge= inProgressTasks.length
+					div.wrapper
+						each val in inProgressTasks
+							.input-group
+								.input-group-btn
+									form(action='/task/update/todo', method='post')
+										button(type='submit' class='btn btn-info' name='contents' value= val) <strong><</strong>
+								li.list-group-item(draggable='true' ondragstart='drag(this,event)' id=`${val}`)= val
+								.input-group-btn
+									form(action='/task/update/done', method='post')
+										button(type='submit' class='btn btn-info' name='contents' value= val) <strong>></strong>
+			.col-lg-4
+				ul.list-group(ondrop='drop("done",event)' ondragover="allowDrop(event)")
+					li.list-group-item.active Done
+						span.badge= doneTasks.length
+					div.wrapper
+						each val in doneTasks
+							.input-group
+								.input-group-btn
+									form(action='/task/update/progress', method='post')
+										button(type='submit' class='btn btn-info' name='contents' value= val) <strong><</strong>
+								li.list-group-item(draggable='true' ondragstart='drag(this,event)' id=`${val}`)= val
+								.input-group-btn
+									form(action='/task/remove', method='post')
+										button(type='submit' class='btn btn-danger' name='contents' value= val) D
