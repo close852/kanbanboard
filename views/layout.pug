@@ -6,6 +6,10 @@ html
 		link(rel='stylesheet', href='//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap-theme.min.css')
 		script(src="//code.jquery.com/jquery-latest.min.js")
 		script(src='//netdna.bootstrapcdn.com/bootstrap/3.0.0/js/bootstrap.min.js')
+		style.
+			li{
+				word-break: break-all;
+			}
 		script.
 			function drag(me, ev){
 			    ev.dataTransfer.setData("Text", ev.target.id);
@@ -17,11 +21,13 @@ html
 				$.ajax({
 					url:`/task/updateAjax/${status}`,
 					method:"post",
-					async:false,
 					data:{data:text}
 				}).done((data)=>{
-					location.reload();
+					if(data.result){
+						location.reload();
+					}
 				}).error(e=>{
+					alert('error!'+e)
 				})
 				ev.preventDefault();
 			}

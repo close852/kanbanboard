@@ -50,9 +50,8 @@ app.post('/updateAjax/:status', (req, res) => {
     let { status } = req.params;
     let { data } = req.body;
 
-    isContain(initialTasks.inProgress, data)
-    isContain(initialTasks.todo, data)
-    isContain(initialTasks.done, data)
+    removeData(initialTasks, data);
+
     let isc = false;
     if (status === 'done') {
         initialTasks.done.push(data);
@@ -68,6 +67,7 @@ app.post('/updateAjax/:status', (req, res) => {
 })
 
 app.post('/remove', (req, res) => {
+
     let { contents } = req.body;
     if (isContain(initialTasks.done, contents)) {
         res.redirect('/task')
@@ -77,6 +77,12 @@ app.post('/remove', (req, res) => {
 
 })
 
+let removeData = (arr, contents) => {
+    let keys = Object.keys(arr);
+    for (v in keys) {
+        isContain(arr[keys[v]], contents);
+    }
+}
 let isContain = (arr, contents) => {
     let isc = false;
     if (arr.find(e => e === contents)) {
