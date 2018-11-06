@@ -1,16 +1,16 @@
 let express = require('express');
 let app = express();
-let initialTasks = require('../models/initial-tasks')
+let initBoard = require('../models/data')
 //list
 app.get('/', (req, res) => [
     res.redirect('/task/list')
 ])
-app.get('/list', (req, res) => {
+app.get('/list', async (req, res) => {
     res.render('index', {
         title: 'My Kanban Board',
-        todoTasks: initialTasks.todo,
-        inProgressTasks: initialTasks.inProgress,
-        doneTasks: initialTasks.done
+        todoTasks: await initBoard.todo,
+        inProgressTasks: await initBoard.inProgress,
+        doneTasks: await initBoard.done
     })
 })
 app.post('/add', (req, res) => {
@@ -18,58 +18,23 @@ app.post('/add', (req, res) => {
     if (!contents) {
         return;
     }
-    if (!initialTasks.todo.find(e => e === contents)) {
-        (initialTasks.todo.push(contents))
+    if (!initBoard.todo.find(e => e === contents)) {
+        (initBoard.todo.push(contents))
     }
     res.redirect('/task')
 })
 
-app.put('/update/:status', (req, res) => {
-    let { status } = req.params;
-    let { contents } = req.body;
-    if (status === 'done') {
-        if (isContain(initialTasks.inProgress, contents)) {
-            initialTasks.done.push(contents);
-        }
-    } else if (status === 'progress') {
-        if (isContain(initialTasks.todo, contents)) {
-            initialTasks.inProgress.push(contents);
-        } else if (isContain(initialTasks.done, contents)) {
-            initialTasks.inProgress.push(contents);
-        }
-    } else if (status === 'todo') {
-        if (isContain(initialTasks.inProgress, contents)) {
-            initialTasks.todo.push(contents);
-        }
-
-    }
-    res.redirect('/task')
-})
-
-app.put('/updateAjax/:status', (req, res) => {
+app.put('/updateAjax/:status', async (req, res) => {
     let { status } = req.params;
     let { data } = req.body;
 
-    removeData(initialTasks, data);
-
-    let isc = false;
-    if (status === 'done') {
-        initialTasks.done.push(data);
-        isc = true;
-    } else if (status === 'inProgress') {
-        initialTasks.inProgress.push(data);
-        isc = true;
-    } else if (status === 'todo') {
-        initialTasks.todo.push(data);
-        isc = true;
-    }
-    res.send({ result: true, msg: 'gogo' });
+    res.send({ result: true, done: await initBoard.done, inProgress: await initBoard.inProgress, todo: await initBoard.todo });
 })
 
 app.delete('/remove', (req, res) => {
 
     let { contents } = req.body;
-    if (isContain(initialTasks.done, contents)) {
+    if (isContain(initBoard.done, contents)) {
         res.redirect('/task')
     } else {
         res.redirect('/task')

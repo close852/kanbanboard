@@ -16,15 +16,25 @@ html
 			}
 			function drop(status,ev) {
 				var text = ev.dataTransfer.getData("Text");
-				//- $(ev.target).parents('.wrapper').append(document.getElementById(text))
-				//- $('#'+text).siblings().remove();
 				$.ajax({
 					url:`/task/updateAjax/${status}`,
 					method:"put",
 					data:{data:text}
 				}).done((data)=>{
 					if(data.result){
-						location.reload();
+						//1. 본문 옮기기
+						// 메모 contents에 drop 할 경우
+						if($(ev.target).parents('.wrapper').attr('class')){
+							$(ev.target).parents('.wrapper').append(document.getElementById(text))
+						// 메모 title에 drop 할 경우
+						}else{
+							$(ev.target).siblings('.wrapper').append(document.getElementById(text))
+						}
+
+						//2. badge 수정하기
+						$('#todo-badge').text(data.todo.length)
+						$('#inProgress-badge').text(data.inProgress.length)
+						$('#done-badge').text(data.done.length)
 					}
 				}).error(e=>{
 					alert('error!'+e)

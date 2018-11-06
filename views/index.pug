@@ -14,44 +14,21 @@ block content
 			.col-lg-4
 				ul.list-group(ondrop='drop("todo",event)' ondragover="allowDrop(event)")
 					li.list-group-item.active TO-DO
-						span.badge= todoTasks.length
+						span(id='todo-badge').badge= todoTasks.length
 					div.wrapper
 						each val in todoTasks
-							.input-group
-								li.list-group-item(draggable='true' ondragstart='drag(this,event)' id=`${val}`)= val
-								.input-group-btn
-									form(action='/task/update/progress', method='post')
-										input(type="hidden", name="_method" value="PUT")
-										button(type='submit' class='btn btn-info' name='contents' value= val) <strong>></strong>
+							li.list-group-item(draggable='true' ondragstart='drag(this,event)' id=`${val.boardid}`)= val.contents
 			.col-lg-4
 				ul.list-group(ondrop='drop("inProgress",event)' ondragover="allowDrop(event)")
 					li.list-group-item.active In-Progress
-						span.badge= inProgressTasks.length
+						span(id='inProgress-badge').badge= inProgressTasks.length
 					div.wrapper
 						each val in inProgressTasks
-							.input-group
-								.input-group-btn
-									form(action='/task/update/todo', method='post')
-										input(type="hidden", name="_method" value="PUT")
-										button(type='submit' class='btn btn-info' name='contents' value= val) <strong><</strong>
-								li.list-group-item(draggable='true' ondragstart='drag(this,event)' id=`${val}`)= val
-								.input-group-btn
-									form(action='/task/update/done', method='post')
-										input(type="hidden", name="_method" value="PUT")
-										button(type='submit' class='btn btn-info' name='contents' value= val) <strong>></strong>
+							li.list-group-item(draggable='true' ondragstart='drag(this,event)' id=`${val.boardid}`)= val.contents
 			.col-lg-4
 				ul.list-group(ondrop='drop("done",event)' ondragover="allowDrop(event)")
 					li.list-group-item.active Done
-						span.badge= doneTasks.length
+						span(id='done-badge').badge= doneTasks.length
 					div.wrapper
 						each val in doneTasks
-							.input-group
-								.input-group-btn
-									form(action='/task/update/progress', method='post')
-										input(type="hidden", name="_method" value="PUT")
-										button(type='submit' class='btn btn-info' name='contents' value= val) <strong><</strong>
-								li.list-group-item(draggable='true' ondragstart='drag(this,event)' id=`${val}`)= val
-								.input-group-btn
-									form(action='/task/remove', method='post')
-										input(type="hidden", name="_method" value="DELETE")
-										button(type='submit' class='btn btn-danger' name='contents' value= val) D
+							li.list-group-item(draggable='true' ondragstart='drag(this,event)' id=`${val.boardid}`)= val.contents
